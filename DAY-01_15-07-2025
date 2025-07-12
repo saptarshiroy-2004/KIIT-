@@ -1,0 +1,167 @@
+//Q1 
+
+#include<stdio.h>
+int main (){
+    int n, i;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+    int arr[n];
+    printf("Enter %d elements:\n", n);
+    for(i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    int smallest = arr[0], largest = arr[0];
+    for(i = 1; i < n; i++) {
+        if(arr[i] < smallest)
+            smallest = arr[i];
+        if(arr[i] > largest)
+            largest = arr[i];
+    }
+    int second_smallest = largest, second_largest = smallest;
+    int found_smallest = 0, found_largest = 0;
+
+    for(i = 0; i < n; i++) {
+        if(arr[i] > smallest && arr[i] < second_smallest) {
+            second_smallest = arr[i];
+            found_smallest = 1;
+        }
+        if(arr[i] < largest && arr[i] > second_largest) {
+            second_largest = arr[i];
+            found_largest = 1;
+        }
+    }
+
+    if(found_smallest)
+        printf("Second smallest: %d\n", second_smallest);
+    else
+        printf("No second smallest element.\n");
+
+    if(found_largest)
+        printf("Second largest: %d\n", second_largest);
+    else
+        printf("No second largest element.\n");
+}
+
+//Q2 
+
+#include <stdio.h>
+
+int main() {
+    int N, i;
+    printf("Enter the size of the array: ");
+    scanf("%d", &N);
+
+    int arr[N], prefixSum[N];
+
+    printf("Enter %d elements:\n", N);
+    for(i = 0; i < N; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    prefixSum[0] = arr[0];
+    for(i = 1; i < N; i++) {
+        prefixSum[i] = prefixSum[i-1] + arr[i];
+    }
+
+    printf("Output Array:\n");
+    for(i = 0; i < N; i++) {
+        printf("%d ", prefixSum[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+//Q3 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 1000
+
+int main() {
+    FILE *fp;
+    int arr[MAX_SIZE], freq[MAX_SIZE] = {0};
+    int n = 0, i, j, count, total_duplicates = 0, max_count = 0, most_repeating;
+
+    // Open the file for reading
+    fp = fopen("input.txt", "r");
+    if (fp == NULL) {
+        printf("Error: Cannot open input.txt file.\n");
+        return 1;
+    }
+
+    // Read integers from file into array
+    while (fscanf(fp, "%d", &arr[n]) == 1 && n < MAX_SIZE) {
+        n++;
+    }
+    fclose(fp);
+
+    // Count duplicates and find most repeating element
+    for (i = 0; i < n; i++) {
+        if (freq[i] == 0) {
+            count = 1;
+            for (j = i + 1; j < n; j++) {
+                if (arr[i] == arr[j]) {
+                    count++;
+                    freq[j] = 1; // Mark as counted
+                }
+            }
+            if (count > 1) {
+                total_duplicates += (count - 1);
+            }
+            if (count > max_count) {
+                max_count = count;
+                most_repeating = arr[i];
+            }
+        }
+    }
+
+    printf("Total number of duplicate elements: %d\n", total_duplicates);
+    printf("Most repeating element: %d (repeats %d times)\n", most_repeating, max_count);
+
+    return 0;
+}
+
+// Q4 
+
+#include <stdio.h>
+
+// Function to exchange/swap two integers
+void EXCHANGE(int *p, int *q) {
+    int temp = *p;
+    *p = *q;
+    *q = temp;
+}
+
+// Function to rotate right the first p2 elements of the array by 1 position
+void ROTATE_RIGHT(int *p1, int p2) {
+    if (p2 <= 1) return; // No rotation needed for 0 or 1 element
+
+    // Store the last element of the first p2 elements
+    int i;
+    for (i = p2 - 1; i > 0; i--) {
+        EXCHANGE(&p1[i], &p1[i - 1]);
+    }
+}
+
+int main() {
+    // int arr[] = {1, 2, 3, 4, 5, 6};
+    // int n = sizeof(arr) / sizeof(arr[0]);
+    int n,i;
+    printf("Enter the size of the array: ");
+    scanf("%d", &n);
+    int arr[n];
+    printf("Enter %d elements:\n", n);
+    for(i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    int rotate_count = 5; // Rotate first 4 elements
+    ROTATE_RIGHT(arr, rotate_count);
+    // Print the array after rotation
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+    return 0;
+}
